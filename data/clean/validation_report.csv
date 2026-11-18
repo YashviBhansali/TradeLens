@@ -1,0 +1,7 @@
+file,records,years,unique_partners,trade_flows,duplicate_records,missing_trade_values,world_records,negative_values
+singapore_hs27.csv,751,"2020, 2021, 2022, 2023, 2024, 2025",166,M,0,0,6,0
+singapore_hs84.csv,1223,"2020, 2021, 2022, 2023, 2024, 2025",228,M,0,0,6,0
+singapore_hs85.csv,1248,"2020, 2021, 2022, 2023, 2024, 2025",229,M,0,0,6,0
+hong_kong_hs27.csv,244,"2020, 2021, 2022, 2023, 2024, 2025",56,M,0,0,6,0
+hong_kong_hs84.csv,748,"2020, 2021, 2022, 2023, 2024, 2025",151,M,0,0,6,0
+hong_kong_hs85.csv,953,"2020, 2021, 2022, 2023, 2024, 2025",185,M,0,0,6,0

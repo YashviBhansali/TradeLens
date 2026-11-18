@@ -1,0 +1,37 @@
+economy,year,hs_code,disrupted_partner,exposed_imports_usd,exposure_pct,remaining_imports_usd,scenario_assumption
+Hong Kong,2020,27,China,4642106906.807,52.461340708829916,4206517325.981,No immediate substitution or inventory buffer
+Hong Kong,2020,84,China,37768074645.828,56.163452037325335,29478637007.024002,No immediate substitution or inventory buffer
+Hong Kong,2020,85,China,151134944597.599,46.98438254929806,170535654008.271,No immediate substitution or inventory buffer
+Hong Kong,2021,27,China,5376284128.067,47.49906322909288,5942431995.105002,No immediate substitution or inventory buffer
+Hong Kong,2021,84,China,47890892125.716,57.95426219118374,34744776615.489,No immediate substitution or inventory buffer
+Hong Kong,2021,85,China,189920274234.095,47.09008730203479,213392365676.616,No immediate substitution or inventory buffer
+Hong Kong,2022,27,China,6856939011.874,46.95268767100119,7746993908.688003,No immediate substitution or inventory buffer
+Hong Kong,2022,84,China,39339243210.408,52.557935816431126,35510049478.346,No immediate substitution or inventory buffer
+Hong Kong,2022,85,China,160277287035.05,42.680807620178484,215248144586.05798,No immediate substitution or inventory buffer
+Hong Kong,2023,27,China,7911026967.256,54.420908993892134,6625714725.433999,No immediate substitution or inventory buffer
+Hong Kong,2023,84,China,33588353591.454,49.418525528092836,34378776614.323,No immediate substitution or inventory buffer
+Hong Kong,2023,85,China,156779436605.557,45.53745095802372,187507371960.15698,No immediate substitution or inventory buffer
+Hong Kong,2024,27,China,7885834538.812,53.673240942097976,6806467249.557999,No immediate substitution or inventory buffer
+Hong Kong,2024,84,China,39362319642.603,45.34709632625898,47439973848.037994,No immediate substitution or inventory buffer
+Hong Kong,2024,85,China,167039178910.215,44.93241515278527,204717332156.96402,No immediate substitution or inventory buffer
+Hong Kong,2025,27,China,7841536809.852,57.99920841272852,5678538764.370999,No immediate substitution or inventory buffer
+Hong Kong,2025,84,China,53700425666.665,48.046581440510074,58066996815.11001,No immediate substitution or inventory buffer
+Hong Kong,2025,85,China,195356779428.997,44.148091873660455,247146556814.96503,No immediate substitution or inventory buffer
+Singapore,2020,27,Malaysia,8833851377.407,17.996359396304833,40253028823.601,No immediate substitution or inventory buffer
+Singapore,2020,84,USA,13424986398.759,25.391297585550728,39447405622.666,No immediate substitution or inventory buffer
+Singapore,2020,85,"Other Asia, nes",31516984527.35,28.998446187087463,77168095783.55301,No immediate substitution or inventory buffer
+Singapore,2021,27,Malaysia,11944320772.183,15.85358225341214,63397142004.233,No immediate substitution or inventory buffer
+Singapore,2021,84,USA,14931421932.664,24.940893436650818,44935807645.897,No immediate substitution or inventory buffer
+Singapore,2021,85,"Other Asia, nes",44332100857.147,32.180069692257305,93430499662.682,No immediate substitution or inventory buffer
+Singapore,2022,27,Malaysia,16128468262.77,15.326215046420563,89106047982.236,No immediate substitution or inventory buffer
+Singapore,2022,84,USA,17141366146.84,26.184663690159134,48322014821.77701,No immediate substitution or inventory buffer
+Singapore,2022,85,"Other Asia, nes",48935358825.77,31.625558783454906,105798219672.67798,No immediate substitution or inventory buffer
+Singapore,2023,27,United Arab Emirates,10617980206.4,12.159023131001467,76707951260.312,No immediate substitution or inventory buffer
+Singapore,2023,84,USA,18238845266.557,28.377283836877037,46033850356.46501,No immediate substitution or inventory buffer
+Singapore,2023,85,"Other Asia, nes",40856866756.118,31.108830676829026,90478403220.936,No immediate substitution or inventory buffer
+Singapore,2024,27,United Arab Emirates,11313906947.569,12.955272199195777,76016615897.57301,No immediate substitution or inventory buffer
+Singapore,2024,84,USA,21174783372.796,25.606562702834328,61518015416.83699,No immediate substitution or inventory buffer
+Singapore,2024,85,"Other Asia, nes",49400100175.345,34.28837658750387,94672338043.70001,No immediate substitution or inventory buffer
+Singapore,2025,27,United Arab Emirates,13733030114.272,17.621524441189624,64200239280.80699,No immediate substitution or inventory buffer
+Singapore,2025,84,USA,25273532061.083,23.575764198052852,81927794898.10999,No immediate substitution or inventory buffer
+Singapore,2025,85,"Other Asia, nes",57350181511.564,33.353064443857896,114598580822.103,No immediate substitution or inventory buffer

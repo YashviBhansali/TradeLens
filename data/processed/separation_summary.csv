@@ -1,0 +1,7 @@
+Economy,HS Chapter,Records,Years,Output
+Singapore,27,751,"[2020, 2021, 2022, 2023, 2024, 2025]",singapore_hs27.csv
+Singapore,84,1223,"[2020, 2021, 2022, 2023, 2024, 2025]",singapore_hs84.csv
+Singapore,85,1248,"[2020, 2021, 2022, 2023, 2024, 2025]",singapore_hs85.csv
+Hong Kong,27,244,"[2020, 2021, 2022, 2023, 2024, 2025]",hong_kong_hs27.csv
+Hong Kong,84,748,"[2020, 2021, 2022, 2023, 2024, 2025]",hong_kong_hs84.csv
+Hong Kong,85,953,"[2020, 2021, 2022, 2023, 2024, 2025]",hong_kong_hs85.csv

@@ -1,0 +1,37 @@
+economy,year,hs_code,product,partner_code,partner,import_value_usd,classificationCode,isReported,isAggregate
+Hong Kong,2020,27,Mineral fuels and oils,0,World,8848624232.788,H5,False,True
+Hong Kong,2021,27,Mineral fuels and oils,0,World,11318716123.172,H5,False,True
+Hong Kong,2022,27,Mineral fuels and oils,0,World,14603932920.561,H6,False,True
+Hong Kong,2023,27,Mineral fuels and oils,0,World,14536741692.689,H6,False,True
+Hong Kong,2024,27,Mineral fuels and oils,0,World,14692301788.368,H6,False,True
+Hong Kong,2025,27,Mineral fuels and oils,0,World,13520075574.221,H6,False,True
+Hong Kong,2020,84,Machinery and mechanical appliances,0,World,67246711652.851,H5,False,True
+Hong Kong,2021,84,Machinery and mechanical appliances,0,World,82635668741.208,H5,False,True
+Hong Kong,2022,84,Machinery and mechanical appliances,0,World,74849292688.754,H6,False,True
+Hong Kong,2023,84,Machinery and mechanical appliances,0,World,67967130205.777,H6,False,True
+Hong Kong,2024,84,Machinery and mechanical appliances,0,World,86802293490.645,H6,False,True
+Hong Kong,2025,84,Machinery and mechanical appliances,0,World,111767422481.775,H6,False,True
+Hong Kong,2020,85,Electrical machinery and equipment,0,World,321670598605.869,H5,False,True
+Hong Kong,2021,85,Electrical machinery and equipment,0,World,403312639910.714,H5,False,True
+Hong Kong,2022,85,Electrical machinery and equipment,0,World,375525431621.107,H6,False,True
+Hong Kong,2023,85,Electrical machinery and equipment,0,World,344286808565.718,H6,False,True
+Hong Kong,2024,85,Electrical machinery and equipment,0,World,371756511067.179,H6,False,True
+Hong Kong,2025,85,Electrical machinery and equipment,0,World,442503336243.96,H6,False,True
+Singapore,2020,27,Mineral fuels and oils,0,World,49086880201.008,H5,False,True
+Singapore,2021,27,Mineral fuels and oils,0,World,75341462776.422,H5,False,True
+Singapore,2022,27,Mineral fuels and oils,0,World,105234516245.008,H6,False,True
+Singapore,2023,27,Mineral fuels and oils,0,World,87325931466.707,H6,False,True
+Singapore,2024,27,Mineral fuels and oils,0,World,87330522845.142,H6,False,True
+Singapore,2025,27,Mineral fuels and oils,0,World,77933269395.078,H6,False,True
+Singapore,2020,84,Machinery and mechanical appliances,0,World,52872392021.431,H5,False,True
+Singapore,2021,84,Machinery and mechanical appliances,0,World,59867229578.566,H5,False,True
+Singapore,2022,84,Machinery and mechanical appliances,0,World,65463380968.629,H6,False,True
+Singapore,2023,84,Machinery and mechanical appliances,0,World,64272695623.025,H6,False,True
+Singapore,2024,84,Machinery and mechanical appliances,0,World,82692798789.631,H6,False,True
+Singapore,2025,84,Machinery and mechanical appliances,0,World,107201326959.187,H6,False,True
+Singapore,2020,85,Electrical machinery and equipment,0,World,108685080310.898,H5,False,True
+Singapore,2021,85,Electrical machinery and equipment,0,World,137762600519.827,H5,False,True
+Singapore,2022,85,Electrical machinery and equipment,0,World,154733578498.446,H6,False,True
+Singapore,2023,85,Electrical machinery and equipment,0,World,131335269977.063,H6,False,True
+Singapore,2024,85,Electrical machinery and equipment,0,World,144072438219.039,H6,False,True
+Singapore,2025,85,Electrical machinery and equipment,0,World,171948762333.67,H6,False,True
