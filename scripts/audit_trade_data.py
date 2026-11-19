@@ -106,4 +106,40 @@ original_audit = (
 print(original_audit.to_string(index=False))
 
 
+# 9. AGGREGATION AND REPORTING STATUS
+print("\n9. AGGREGATION AND REPORTING STATUS")
+
+aggregation_audit = (
+    df.groupby(
+        [
+            "reporterDesc",
+            "aggrLevel",
+            "isAggregate",
+            "isLeaf",
+            "isReported"
+        ],
+        dropna=False
+    )
+    .size()
+    .reset_index(name="records")
+)
+
+print(aggregation_audit.to_string(index=False))
+
+
+# 10. HS CHAPTER DESCRIPTIONS BY CLASSIFICATION
+print("\n10. HS CHAPTER DESCRIPTIONS BY CLASSIFICATION")
+
+description_audit = (
+    df.groupby(
+        ["classificationCode", "cmdCode", "cmdDesc"],
+        dropna=False
+    )
+    .size()
+    .reset_index(name="records")
+    .sort_values(["cmdCode", "classificationCode"])
+)
+
+print(description_audit.to_string(index=False))
+
 print("\nAudit completed.")

@@ -1,0 +1,24 @@
+check,status,detail
+Expected economies,PASS,
+Expected years,PASS,
+Expected HS chapters,PASS,
+Both analysis scopes present,PASS,
+Expected 72 concentration groups,PASS,Found 72
+Expected 72 scenario rows,PASS,Found 72
+Partner shares sum to 100%,PASS,Maximum deviation: 0.00000000 percentage points
+No duplicate partner entries within groups,PASS,Duplicates: 0
+No residual categories in identified-country scope,PASS,
+HHI independently recalculated,PASS,Maximum difference: 0.00000000
+Partner values reconcile with analysis totals,PASS,Maximum difference: $0.0001
+Identified and residual imports reconcile,PASS,Maximum difference: $0.0000
+Top partner names match,PASS,
+Top partner codes match,PASS,
+Top-one shares match,PASS,
+Scenario selects largest partner,PASS,
+Scenario partner code matches,PASS,
+Scenario exposure USD matches largest partner,PASS,Maximum difference: $0.0000
+Scenario within-scope percentage matches,PASS,
+Scenario total-import percentage matches,PASS,
+Scenario assumption is appropriately qualified,PASS,
+Residual audit has individual and total shares,PASS,
+Residual shares are non-negative,PASS,
