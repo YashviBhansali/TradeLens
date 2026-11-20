@@ -1,5 +1,5 @@
-
 from pathlib import Path
+
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -14,144 +14,197 @@ FILES = [
     "hong_kong_hs84.csv",
     "hong_kong_hs85.csv",
 ]
+EXPECTED_YEARS = set(range(2020, 2026))
+REQUIRED_COLUMNS = {
+    "reporterDesc",
+    "period",
+    "flowCode",
+    "partnerCode",
+    "partnerDesc",
+    "cmdCode",
+    "primaryValue",
+    "classificationCode",
+}
 
-OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
-audit_results = []
-
-for filename in FILES:
-
-    path = DATA_DIR / filename
-
-    print("\n" + "=" * 65)
-    print(f"VALIDATING: {filename}")
-    print("=" * 65)
-
-    if not path.exists():
-        print("FILE NOT FOUND")
-        continue
-
-    df = pd.read_csv(path, low_memory=False)
-
-    # Convert numeric fields safely
-    df["period"] = pd.to_numeric(
-        df["period"], errors="coerce"
+def add_check(rows: list[dict], filename: str, check: str, passed: bool, detail: str = "") -> None:
+    rows.append(
+        {
+            "file": filename,
+            "check": check,
+            "status": "PASS" if passed else "FAIL",
+            "detail": detail,
+        }
     )
 
-    df["primaryValue"] = pd.to_numeric(
-        df["primaryValue"], errors="coerce"
-    )
 
-    df["partnerCode"] = pd.to_numeric(
-        df["partnerCode"], errors="coerce"
-    )
+def main() -> None:
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    results = []
 
-    print("Records:", len(df))
+    for filename in FILES:
+        path = DATA_DIR / filename
+        if not path.exists():
+            add_check(results, filename, "File exists", False, str(path))
+            continue
 
-    # 1. Year coverage
-    print("\nYear coverage:")
-    print(df["period"].value_counts().sort_index())
+        df = pd.read_csv(path, low_memory=False)
+        add_check(results, filename, "File exists", True, f"{len(df):,} rows")
 
-    # 2. Trade flow
-    print("\nTrade flow:")
-    print(df["flowDesc"].value_counts(dropna=False))
-    print("Flow codes:", df["flowCode"].unique())
+        missing_columns = sorted(REQUIRED_COLUMNS - set(df.columns))
+        add_check(
+            results,
+            filename,
+            "Required columns present",
+            not missing_columns,
+            ", ".join(missing_columns),
+        )
+        if missing_columns:
+            continue
 
-    # 3. Commodity classification
-    print("\nCommodity codes:")
-    print(df["cmdCode"].value_counts().head(10))
+        year_column = "refYear" if "refYear" in df.columns else "period"
+        years = pd.to_numeric(df[year_column], errors="coerce")
+        observed_years = set(years.dropna().astype(int).unique())
+        add_check(
+            results,
+            filename,
+            "Complete annual coverage 2020–2025",
+            observed_years == EXPECTED_YEARS,
+            f"Observed years: {sorted(observed_years)}",
+        )
 
-    print("Aggregation levels:")
-    print(df["aggrLevel"].value_counts(dropna=False))
+        expected_hs = filename.rsplit("hs", 1)[1].removesuffix(".csv")
+        hs_values = (
+            df["cmdCode"].astype("string").str.strip()
+            .str.replace(r"\.0$", "", regex=True)
+        )
+        add_check(
+            results,
+            filename,
+            "Correct HS chapter",
+            set(hs_values.dropna().unique()) == {expected_hs},
+            f"Observed chapters: {sorted(hs_values.dropna().unique())}",
+        )
 
-    print("Is aggregate:")
-    print(df["isAggregate"].value_counts(dropna=False))
+        flows = df["flowCode"].astype("string").str.upper()
+        add_check(
+            results,
+            filename,
+            "Import flow only",
+            flows.eq("M").all(),
+            f"Observed flow codes: {sorted(flows.dropna().unique())}",
+        )
 
-    print("Is leaf:")
-    print(df["isLeaf"].value_counts(dropna=False))
+        if "freqCode" in df.columns:
+            frequencies = df["freqCode"].astype("string").str.upper()
+            annual_only = frequencies.eq("A").all()
+        else:
+            annual_only = True
+        add_check(
+            results,
+            filename,
+            "Annual frequency only",
+            annual_only,
+            (
+                f"Observed frequency codes: "
+                f"{sorted(df['freqCode'].dropna().astype(str).unique())}"
+                if "freqCode" in df.columns
+                else "Frequency field not supplied"
+            ),
+        )
 
-    # 4. Trading partners
-    print("\nNumber of unique partners:")
-    print(df["partnerCode"].nunique())
+        missing_values = int(df[list(REQUIRED_COLUMNS)].isna().sum().sum())
+        add_check(
+            results,
+            filename,
+            "No missing essential values",
+            missing_values == 0,
+            f"Missing cells: {missing_values}",
+        )
 
-    print("World / aggregate partner records:")
-    world = df[
-        df["partnerDesc"]
-        .astype(str)
-        .str.contains("world", case=False, na=False)
-    ]
+        values = pd.to_numeric(df["primaryValue"], errors="coerce")
+        invalid_values = int(values.isna().sum())
+        add_check(
+            results,
+            filename,
+            "Import values are numeric",
+            invalid_values == 0,
+            f"Invalid values: {invalid_values}",
+        )
 
-    print(len(world))
-    print(world["partnerDesc"].value_counts())
+        negative_values = int(values.lt(0).sum())
+        add_check(
+            results,
+            filename,
+            "No negative import values",
+            negative_values == 0,
+            f"Negative values: {negative_values}",
+        )
 
-    # 5. Missing values
-    print("\nMissing values:")
-    print(
-        df[
-            ["period", "partnerCode", "partnerDesc",
-             "cmdCode", "primaryValue"]
-        ].isna().sum()
-    )
-
-    # 6. Duplicate records
-    key_columns = [
-        "reporterCode",
-        "partnerCode",
-        "period",
-        "cmdCode",
-        "flowCode",
-        "classificationCode",
-    ]
-
-    duplicate_count = df.duplicated(
-        subset=key_columns
-    ).sum()
-
-    print("\nDuplicate records:", duplicate_count)
-
-    # 7. Trade value checks
-    print("\nTrade value:")
-    print(df["primaryValue"].describe())
-
-    negative_values = (df["primaryValue"] < 0).sum()
-    print("Negative trade values:", negative_values)
-
-    # 8. Save audit summary
-    audit_results.append({
-        "file": filename,
-        "records": len(df),
-        "years": ", ".join(
-            map(
-                str,
-                sorted(
-                    df["period"].dropna().unique()
-                )
+        duplicate_keys = [
+            column
+            for column in (
+                "reporterCode",
+                "partnerCode",
+                "period",
+                "cmdCode",
+                "flowCode",
+                "classificationCode",
             )
-        ),
-        "unique_partners": df["partnerCode"].nunique(),
-        "trade_flows": ", ".join(
-            df["flowCode"].dropna().astype(str).unique()
-        ),
-        "duplicate_records": duplicate_count,
-        "missing_trade_values": df["primaryValue"].isna().sum(),
-        "world_records": len(world),
-        "negative_values": negative_values,
-    })
+            if column in df.columns
+        ]
+        duplicate_count = int(df.duplicated(subset=duplicate_keys).sum())
+        add_check(
+            results,
+            filename,
+            "No duplicate trade records",
+            duplicate_count == 0,
+            f"Duplicates: {duplicate_count}",
+        )
+
+        if "classificationCode" in df.columns:
+            classification_by_year = (
+                df.assign(_year=years)
+                .groupby("_year")["classificationCode"]
+                .nunique()
+            )
+            consistent = bool(classification_by_year.le(1).all())
+            detail = (
+                "One classification per year"
+                if consistent
+                else "Multiple classifications found within a year"
+            )
+        else:
+            consistent = False
+            detail = "classificationCode missing"
+        add_check(
+            results,
+            filename,
+            "Classification consistent within each year",
+            consistent,
+            detail,
+        )
+
+    report = pd.DataFrame(results)
+    report_path = OUTPUT_DIR / "validation_report.csv"
+    report.to_csv(report_path, index=False)
+
+    failures = report[report["status"].eq("FAIL")]
+    passed = int(report["status"].eq("PASS").sum())
+
+    print("\n" + "=" * 68)
+    print("TRADELENS SOURCE-DATA VALIDATION")
+    print("=" * 68)
+    print(report.to_string(index=False))
+    print(f"\nChecks passed: {passed}")
+    print(f"Checks failed: {len(failures)}")
+    print(f"Report saved to: {report_path}")
+
+    if not failures.empty:
+        raise SystemExit("Source-data validation failed.")
+
+    print("\nAll source-data validation checks passed.")
 
 
-# Save audit report
-audit_df = pd.DataFrame(audit_results)
-
-audit_df.to_csv(
-    OUTPUT_DIR / "validation_report.csv",
-    index=False
-)
-
-print("\n" + "=" * 65)
-print("VALIDATION FINISHED")
-print("=" * 65)
-
-print(audit_df.to_string(index=False))
-
-print("\nReport saved to:")
-print(OUTPUT_DIR / "validation_report.csv")
+if __name__ == "__main__":
+    main()
