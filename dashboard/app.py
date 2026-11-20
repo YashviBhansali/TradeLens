@@ -205,6 +205,40 @@ def load_data():
 
         result[key] = pd.read_csv(path)
 
+    required_columns = {
+        "concentration": {
+            "economy", "year", "hs_code", "analysis_scope", "hhi",
+            "effective_partner_count", "top1_share_pct", "top3_share_pct",
+            "top5_share_pct", "residual_share_of_total_pct",
+        },
+        "shares": {
+            "economy", "year", "hs_code", "analysis_scope", "partner",
+            "partner_code", "import_value_usd", "import_share_pct", "is_residual",
+        },
+        "top": {
+            "economy", "year", "hs_code", "analysis_scope", "rank", "partner",
+            "partner_code", "import_value_usd", "import_share_pct", "is_residual",
+        },
+        "scenarios": {
+            "economy", "year", "hs_code", "analysis_scope",
+            "largest_partner_or_category", "gross_exposure_usd",
+            "gross_exposure_pct_of_scope_imports",
+            "gross_exposure_pct_of_total_imports", "assumption",
+        },
+        "residual": {
+            "economy", "year", "hs_code", "partner", "partner_code",
+            "residual_imports_usd", "individual_residual_share_pct",
+            "total_residual_share_pct",
+        },
+    }
+
+    for key, required in required_columns.items():
+        missing = sorted(required - set(result[key].columns))
+        if missing:
+            raise ValueError(
+                f"{key} data is missing required columns: {missing}"
+            )
+
     return result
 
 
@@ -221,6 +255,20 @@ shares = data["shares"]
 top = data["top"]
 scenarios = data["scenarios"]
 residual = data["residual"]
+
+
+def parse_boolean(series):
+    """Parse CSV boolean values without treating the string 'False' as True."""
+    return (
+        series.astype(str)
+        .str.strip()
+        .str.casefold()
+        .isin({"true", "1", "yes"})
+    )
+
+
+shares["is_residual"] = parse_boolean(shares["is_residual"])
+top["is_residual"] = parse_boolean(top["is_residual"])
 
 
 # =========================================================
@@ -598,11 +646,7 @@ with overview:
     # Exclude residual categories: they do not represent
     # individually identifiable countries.
 
-    map_data = map_data[
-        map_data["is_residual"].astype(str).str.lower().isin(
-            ["false", "0"]
-        )
-    ].copy()
+    map_data = map_data[~map_data["is_residual"]].copy()
 
     map_data["map_country"] = (
         map_data["partner"]
@@ -882,7 +926,7 @@ with partners_tab:
         ).copy()
 
         partner_chart["source_type"] = np.where(
-            partner_chart["is_residual"].astype(bool),
+            partner_chart["is_residual"],
             "Residual category",
             "Identified country",
         )
