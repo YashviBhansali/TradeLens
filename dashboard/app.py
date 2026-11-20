@@ -292,6 +292,19 @@ for frame, columns in numeric_columns:
             frame[column], errors="coerce"
         )
 
+def normalise_boolean(series):
+    if pd.api.types.is_bool_dtype(series):
+        return series.fillna(False)
+    return series.astype(str).str.strip().str.casefold().isin(
+        {"true", "1", "yes", "y"}
+    )
+
+
+for frame in [shares, top]:
+    if "is_residual" not in frame.columns:
+        raise ValueError("A required data file is missing the is_residual column.")
+    frame["is_residual"] = normalise_boolean(frame["is_residual"])
+
 
 # =========================================================
 # 5. LABELS AND MAP COUNTRY NAMES
@@ -598,11 +611,7 @@ with overview:
     # Exclude residual categories: they do not represent
     # individually identifiable countries.
 
-    map_data = map_data[
-        map_data["is_residual"].astype(str).str.lower().isin(
-            ["false", "0"]
-        )
-    ].copy()
+    map_data = map_data[~map_data["is_residual"]].copy()
 
     map_data["map_country"] = (
         map_data["partner"]
@@ -629,7 +638,18 @@ with overview:
     map_data = map_data[
         (map_data["import_value_usd"] > 0)
         & map_data["map_country"].notna()
+        & map_data["map_country"].ne("nan")
     ].copy()
+
+    # Several source labels can resolve to the same map label.
+    # Aggregate aliases before plotting to avoid duplicate locations.
+    map_data = (
+        map_data.groupby("map_country", as_index=False)
+        .agg(
+            import_value_usd=("import_value_usd", "sum"),
+            import_share_pct=("import_share_pct", "sum"),
+        )
+    )
 
     if not map_data.empty:
 
@@ -882,7 +902,7 @@ with partners_tab:
         ).copy()
 
         partner_chart["source_type"] = np.where(
-            partner_chart["is_residual"].astype(bool),
+            partner_chart["is_residual"],
             "Residual category",
             "Identified country",
         )
