@@ -138,6 +138,15 @@ Launch the dashboard from the repository root:
 streamlit run dashboard/app.py
 ~~~
 
+### Deploy publicly with Streamlit Community Cloud
+
+1. Push the repository to GitHub.
+2. Open [Streamlit Community Cloud](https://share.streamlit.io/) and sign in with GitHub.
+3. Create a new app and select the **YashviBhansali/TradeLens** repository.
+4. Select the **main** branch.
+5. Set the app's main file path to **dashboard/app.py**.
+6. Deploy. No API key or secret is required by the current app.
+
 ---
 
 ## Reproduce the analysis
@@ -205,7 +214,7 @@ TradeLens/
 
 ## Validation
 
-The project contains separate source-data and metrics-validation scripts. The latest recorded independent metrics-validation run passed **23 checks with zero failures**. Re-running the pipeline regenerates the validation report; the result should be checked after any change to the source data or calculation code.
+The project contains separate source-data and metrics-validation scripts. The metrics validator independently recalculates concentration measures, partner rankings and scenario exposures. Run it after rebuilding the clean datasets to regenerate the validation report.
 
 Validation checks internal consistency and arithmetic. It does not remove limitations in the underlying source data.
 
