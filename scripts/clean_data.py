@@ -241,6 +241,27 @@ summary["partner_coverage_pct"] = (
     * 100
 )
 
+# Reconcile partner-level records against the World benchmark.
+# A missing benchmark or material difference must stop the pipeline.
+if summary["world_imports_usd"].isna().any():
+    raise ValueError("Missing World benchmark for one or more economy-year-HS groups.")
+
+if summary.duplicated(["economy", "hs_code", "year"]).any():
+    raise ValueError("Duplicate economy-year-HS groups found in the trade summary.")
+
+reconciliation_errors = summary[
+    summary["difference_usd"].abs() > 1.0
+]
+if not reconciliation_errors.empty:
+    raise ValueError(
+        "Partner imports do not reconcile with World totals within $1. "
+        "Review these groups:\\n"
+        + reconciliation_errors.to_string(index=False)
+    )
+
+if not summary["partner_coverage_pct"].between(99.999999, 100.000001).all():
+    raise ValueError("Partner coverage is outside the 100% reconciliation tolerance.")
+
 summary.to_csv(
     OUTPUT_DIR / "trade_summary.csv",
     index=False
