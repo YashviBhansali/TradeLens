@@ -205,7 +205,12 @@ fig4 = px.bar(
         "gross_exposure_pct_of_total_imports": "Gross exposure (% of total imports)",
         "economy": "Economy"
     },
-    title="Largest-Partner Gross Import Exposure, 2025"
+    title="Largest Import-Source Category Share, 2025"
+)
+
+fig4.update_traces(
+    textposition="outside",
+    cliponaxis=False,
 )
 
 fig4.update_layout(
