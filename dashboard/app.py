@@ -1251,8 +1251,10 @@ with methodology_tab:
           H5 applies to 2020–2021 and H6 to 2022–2025.
         - Matching chapter descriptions do not prove perfectly
           identical product composition across classifications.
-        - Records have `isReported = False`. This flag alone does
-          not establish that the values are mirror estimates.
+        - The source includes reporting-status and original-classification
+          flags. These are retained for audit purposes; a flag alone does
+          not establish whether an observation is a mirror estimate or
+          otherwise derived.
         - 2025 annual records are present, but this does not
           establish that they are final.
         - Residual categories may represent substantial import
