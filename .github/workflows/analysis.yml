@@ -1,0 +1,56 @@
+name: TradeLens data pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Check Python syntax
+        run: python -m compileall -q scripts dashboard
+
+      - name: Split source data
+        run: python scripts/split_comtrade.py
+
+      - name: Validate source datasets
+        run: python scripts/validate_data.py
+
+      - name: Build clean datasets
+        run: python scripts/clean_data.py
+
+      - name: Audit source data
+        run: python scripts/audit_trade_data.py
+
+      - name: Audit residual categories
+        run: python scripts/audit_partner_categories.py
+
+      - name: Calculate metrics
+        run: python scripts/calculate_metrics.py
+
+      - name: Independently validate metrics
+        run: python scripts/validate_metrics.py
+
+      - name: Generate visualisations
+        run: python scripts/create_visualisations.py
